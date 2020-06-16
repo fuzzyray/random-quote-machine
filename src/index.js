@@ -11,34 +11,24 @@ const defaultQuote = [
 ];
 
 class TweetThis extends React.Component {
-    /*
-        constructor(props) {
-            super(props);
-        }
-    */
     render() {
+        let myHref = "https://twitter.com/intent/tweet"
         if (this.props.current) {
-            return (
-                <p>
-                    <a id="tweet-quote"
-                       href={
-                           "https://twitter.com/intent/tweet?text="
-                           + encodeURIComponent(this.props.current.quote + " - " + this.props.current.author)}
-                       target="_blank"
-                       rel="noopener noreferrer">
-                        Tweet Quote
-                    </a>
-                </p>
-            );
-        } else {
-            return (
-                <a id="tweet-quote" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener noreferrer">
-                    Tweet Quote
-                </a>
-            );
+            myHref += "?text=";
+            myHref += encodeURIComponent(this.props.current.quote + " - " + this.props.current.author);
         }
+        return (
+            <a id="tweet-quote" className="btn btn-secondary"
+               href={myHref} target="_blank" rel="noopener noreferrer"
+               role="button"
+               title="Tweet Quote"
+            >
+                <i className="fab fa-twitter"/>
+            </a>
+        );
     }
 }
+
 
 class QuoteBox extends React.Component {
     constructor(props) {
@@ -64,10 +54,10 @@ class QuoteBox extends React.Component {
 
     renderQuote(current) {
         return (
-            <React.Fragment>
+            <blockquote className="blockquote">
                 <p id="text">{current.quote}</p>
-                <p id="author">{current.author}</p>
-            </React.Fragment>
+                <footer id="author" className="blockquote-footer">{current.author}</footer>
+            </blockquote>
         )
     }
 
@@ -82,11 +72,25 @@ class QuoteBox extends React.Component {
         const current = this.state.current;
 
         return (
-            <div id="quote-box">
-                {(quotes && current) ? this.renderQuote(current) : <p>Fetching quotes....</p>}
-                <button id="new-quote" onClick={() => this.setQuote(quotes)}>New Quote</button>
-                <TweetThis current={this.state.current}/>
-                { /* <a id="tweet-quote" href="https://twitter.com/intent/tweet">Tweet Quote</a> */}
+            <div className="container-fluid">
+                <div id="quote-box" className="card">
+                    <div className="card-header d-flex justify-content-between align-items-center">
+                        <h2>Random Quote Machine</h2>
+                        <TweetThis current={this.state.current}/>
+                    </div>
+                    <div className="card-body">
+                        {(quotes && current) ? this.renderQuote(current) : <p>Fetching quotes....</p>}
+                    </div>
+                    <div className="card-footer">
+                        <button
+                            id="new-quote"
+                            className="btn btn-lg btn-info"
+                            onClick={() => this.setQuote(quotes)}
+                        >
+                            New Quote
+                        </button>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -94,10 +98,7 @@ class QuoteBox extends React.Component {
 
 function App() {
     return (
-        <div className="App">
-            <header className="App-header">
-                <p>Random Quote Machine</p>
-            </header>
+        <div className="jumbotron" style={{minHeight: "100vh"}}>
             <QuoteBox/>
         </div>
     );
