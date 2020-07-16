@@ -10,25 +10,22 @@ const defaultQuote = [
     }
 ];
 
-class TweetThis extends React.Component {
-    render() {
-        let myHref = "https://twitter.com/intent/tweet"
-        if (this.props.current) {
-            myHref += "?text=";
-            myHref += encodeURIComponent(this.props.current.quote + " - " + this.props.current.author);
-        }
-        return (
-            <a id="tweet-quote" className="btn btn-secondary"
-               href={myHref} target="_blank" rel="noopener noreferrer"
-               role="button"
-               title="Tweet Quote"
-            >
-                <i className="fab fa-twitter"/>
-            </a>
-        );
+function TweetQuote(props) {
+    let myHref = "https://twitter.com/intent/tweet"
+    if (props.current) {
+        myHref += "?text=";
+        myHref += encodeURIComponent(props.current.quote + " - " + props.current.author);
     }
+    return (
+        <a id="tweet-quote" className="btn btn-primary"
+           href={myHref} target="_blank" rel="noopener noreferrer"
+           role="button"
+           title="Tweet Quote"
+        >
+            <i className="fab fa-twitter"/>
+        </a>
+    );
 }
-
 
 class QuoteBox extends React.Component {
     constructor(props) {
@@ -76,10 +73,10 @@ class QuoteBox extends React.Component {
                 <div id="quote-box" className="card">
                     <div className="card-header d-flex justify-content-between align-items-center">
                         <h2>Random Quote Machine</h2>
-                        <TweetThis current={this.state.current}/>
+                        <TweetQuote current={this.state.current}/>
                     </div>
                     <div className="card-body">
-                        {(quotes && current) ? this.renderQuote(current) : <p>Fetching quotes....</p>}
+                        {(quotes && current) ? this.renderQuote(current) : <p>Fetching quotes...</p>}
                     </div>
                     <div className="card-footer">
                         <button
